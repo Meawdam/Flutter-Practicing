@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/views/guess_number.dart';
+import 'package:frontend/views/baking_login.dart';
 
 void main() {
-  runApp(MaterialApp(debugShowCheckedModeBanner: false, home: GuessNumber()));
+  runApp(MaterialApp(debugShowCheckedModeBanner: false, home: BakingLogin()));
 }
