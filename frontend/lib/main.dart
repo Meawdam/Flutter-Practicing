@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/views/click_game.dart';
+import 'package:frontend/views/stf.dart';
 
 void main() {
-  runApp(MaterialApp(debugShowCheckedModeBanner: false, home: ClickGame()));
+  runApp(MaterialApp(debugShowCheckedModeBanner: false, home: Rating()));
 }
