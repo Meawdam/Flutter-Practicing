@@ -32,4 +32,18 @@ void main() {
     // expect(textFinder, findsOne);
     expect(find.text("Count = 1"), findsOne);
   });
+
+  testWidgets('2. Clicking reset FAB should reset the counter.', (WidgetTester tester) async {
+    //launch the app
+    await tester.pumpWidget(CounterView());
+    //click the add FAB
+    await tester.tap(find.byIcon(Icons.add));
+    await tester.pump();
+    expect(find.text("Count = 1"), findsOne);
+
+    await tester.tap(find.byIcon(Icons.lock_reset));
+    await tester.pump();
+    expect(find.text("Count = 0"), findsOne);
+
+  });
 }
