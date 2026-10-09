@@ -39,14 +39,17 @@ class _TodoAppState extends State<TodoApp> {
 
   void addTask() {
     String title = textController.text.trim();
-    if(title.isEmpty) {
-      return ;
+    if (title.isEmpty) {
+      return;
     }
     deadline ??= DateTime.now();
     // if(deadline == null) {
     //   deadline = DateTime.now();
     // }
-    todoController.addTask(title, deadline!);
+    setState(() {
+      todoController.addTask(title, deadline!);
+    });
+    textController.clear();
   }
 
   @override
@@ -74,6 +77,22 @@ class _TodoAppState extends State<TodoApp> {
               SizedBox(width: 4),
               FilledButton(onPressed: addTask, child: Text('Add')),
             ],
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: todoController.todos.length,
+              itemBuilder: (context, index) {
+                return Card(
+                  child: ListTile(
+                    leading: Icon(Icons.star),
+                    title: Text(todoController.todos[index].title),
+                    trailing: Wrap(
+                      children: [Icon(Icons.zoom_in), Icon(Icons.edit)],
+                    ),
+                  ),
+                );
+              },
+            ),
           ),
         ],
       ),
