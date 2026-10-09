@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/views/stf.dart';
+import 'package:frontend/views/6731501084.dart';
 
 void main() {
-  runApp(MaterialApp(debugShowCheckedModeBanner: false, home: Rating()));
+  runApp(LabTest());
 }
