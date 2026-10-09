@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/views/counter_view.dart';
+import 'package:frontend/views/todo_view.dart';
 
 void main() {
-  runApp(CounterView());
+  runApp(TodoView());
 }
