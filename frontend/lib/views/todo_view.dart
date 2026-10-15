@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/controller/todo_controller.dart';
+import 'package:frontend/model/todo_model.dart';
 
 class TodoView extends StatelessWidget {
   const new({super.key});
@@ -25,31 +26,17 @@ class TodoApp extends StatefulWidget {
 
 class _TodoAppState extends State<TodoApp> {
   final todoController = TodoController();
-  final textController = TextEditingController();
-  DateTime? deadline;
+  List<TodoModel> todos = [];
 
-  void setDateline() async {
-    deadline = await showDatePicker(
-      context: context,
-      firstDate: DateTime.now(),
-      lastDate: DateTime(DateTime.now().year, 12, 31),
-      initialDate: DateTime.now(),
-    );
+  void fetchTask() async {
+    todos = await todoController.fetchTask();
+    setState(() {});
   }
 
-  void addTask() {
-    String title = textController.text.trim();
-    if (title.isEmpty) {
-      return;
-    }
-    deadline ??= DateTime.now();
-    // if(deadline == null) {
-    //   deadline = DateTime.now();
-    // }
-    setState(() {
-      todoController.addTask(title, deadline!);
-    });
-    textController.clear();
+  @override
+  void initState() {
+    super.initState();
+    fetchTask();
   }
 
   @override
@@ -62,32 +49,35 @@ class _TodoAppState extends State<TodoApp> {
             children: [
               Expanded(
                 child: TextField(
-                  controller: textController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'NewTask',
+                    hintText: 'New task',
                   ),
                 ),
               ),
-              OutlinedButton.icon(
-                onPressed: setDateline,
-                label: Text('Deadline'),
-                icon: Icon(Icons.calendar_today),
-              ),
               SizedBox(width: 4),
-              FilledButton(onPressed: addTask, child: Text('Add')),
+              OutlinedButton.icon(onPressed: null, label: Text('Deadline')),
+              SizedBox(width: 4),
+              FilledButton(onPressed: null, child: Text('Add')),
             ],
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: todoController.todos.length,
+              itemCount: 2,
               itemBuilder: (context, index) {
                 return Card(
                   child: ListTile(
                     leading: Icon(Icons.star),
-                    title: Text(todoController.todos[index].title),
+                    title: Text(todos[index].title),
                     trailing: Wrap(
-                      children: [Icon(Icons.zoom_in), Icon(Icons.edit)],
+                      children: [
+                        IconButton(onPressed: null, icon: Icon(Icons.search)),
+                        IconButton(onPressed: null, icon: Icon(Icons.edit)),
+                        IconButton(
+                          onPressed: null,
+                          icon: Icon(Icons.delete, color: Colors.red),
+                        ),
+                      ],
                     ),
                   ),
                 );

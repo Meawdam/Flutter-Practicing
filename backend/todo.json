@@ -1,18 +1,26 @@
 {
-    "todo": [
-        {
-            "id": "1",
-            "title": "Do homework",
-            "complete": false,
-            "favorite": false,
-            "deadline": "2026-10-15"
-        },
-        {
-            "id": "2",
-            "title": "Cook Dinner",
-            "complete": false,
-            "favorite": false,
-            "deadline": "2026-10-31"
-        }
-    ]
+  "todo": [
+    {
+      "id": "1",
+      "title": "Do homework",
+      "complete": false,
+      "favorite": false,
+      "deadline": "2026-10-15"
+    },
+    {
+      "id": "2",
+      "title": "Cook Dinner",
+      "complete": false,
+      "favorite": false,
+      "deadline": "2026-10-31"
+    },
+    {
+      "title": "Play game",
+      "deadline": "2026-10-15",
+      "complete": false,
+      "favorite": false,
+      "id": "9fp0w1Ixg-A"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }
