@@ -24,7 +24,24 @@ class TodoController {
     }
   }
 
-  void addTask(String title, DateTime deadline) {
-    
+  void addTask(String title, DateTime deadline) async {
+    try {
+      final res = await http.post(
+        Uri.parse(url),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'title': title,
+          'deadline': deadline.toString(),
+          'complete': false,
+          'favorite': false,
+        }),
+      );
+      if (res.statusCode != 201) {
+        throw Exception('Connection Error');
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception('Server Error');
+    }
   }
 }
