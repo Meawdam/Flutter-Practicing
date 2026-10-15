@@ -24,7 +24,7 @@ class TodoController {
     }
   }
 
-  void addTask(String title, DateTime deadline) async {
+  Future<void> addTask(String title, DateTime deadline) async {
     try {
       final res = await http.post(
         Uri.parse(url),
@@ -37,6 +37,24 @@ class TodoController {
         }),
       );
       if (res.statusCode != 201) {
+        throw Exception('Connection Error');
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception('Server Error');
+    }
+  }
+
+    Future<void> editTask(String id, String title) async {
+    try {
+      final res = await http.patch(
+        Uri.parse('$url/$id'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'title': title,
+        }),
+      );
+      if (res.statusCode != 200) {
         throw Exception('Connection Error');
       }
     } catch (e) {

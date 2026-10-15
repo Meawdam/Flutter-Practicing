@@ -18,9 +18,19 @@ void main() {
     List<TodoModel> todos = await todoController.fetchTask();
     int before = todos.length;
 
-    todoController.addTask('Sleep early', DateTime(2026-10-15));
+    await todoController.addTask('Sleep early', DateTime(2026, 10, 15));
+    todos = await todoController.fetchTask();
     expect(todos.length, before + 1);
     expect(todos.last.title, 'Sleep early');
-    expect(todos.last.deadline, '2026-10-15');
+    expect(todos.last.deadline.year, 2026);
+  });
+
+    test('3. edit task title should be changed', () async {
+    final todoController = TodoController();
+    List<TodoModel> todos = await todoController.fetchTask();
+
+    await todoController.editTask('1', 'Shower');
+    todos = await todoController.fetchTask();
+    expect(todos.first.title, 'Shower');
   });
 }

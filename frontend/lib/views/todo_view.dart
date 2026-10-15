@@ -26,11 +26,24 @@ class TodoApp extends StatefulWidget {
 
 class _TodoAppState extends State<TodoApp> {
   final todoController = TodoController();
+  final textController = TextEditingController();
   List<TodoModel> todos = [];
 
   void fetchTask() async {
     todos = await todoController.fetchTask();
     setState(() {});
+  }
+
+  void addTask() async {
+    String title = textController.text.trim();
+    if (title.isEmpty) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Error: no title')));
+      return;
+    }
+    await todoController.addTask(title, DateTime.now());
+    textController.clear();
+    fetchTask();
   }
 
   @override
@@ -49,6 +62,7 @@ class _TodoAppState extends State<TodoApp> {
             children: [
               Expanded(
                 child: TextField(
+                  controller: textController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     hintText: 'New task',
@@ -58,7 +72,7 @@ class _TodoAppState extends State<TodoApp> {
               SizedBox(width: 4),
               OutlinedButton.icon(onPressed: null, label: Text('Deadline')),
               SizedBox(width: 4),
-              FilledButton(onPressed: null, child: Text('Add')),
+              FilledButton(onPressed: addTask, child: Text('Add')),
             ],
           ),
           Expanded(
