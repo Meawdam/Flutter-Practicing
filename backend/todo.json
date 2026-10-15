@@ -1,0 +1,18 @@
+{
+    "todo": [
+        {
+            "id": "1",
+            "title": "Do homework",
+            "complete": false,
+            "favorite": false,
+            "deadline": "2026-10-15"
+        },
+        {
+            "id": "2",
+            "title": "Cook Dinner",
+            "complete": false,
+            "favorite": false,
+            "deadline": "2026-10-31"
+        }
+    ]
+}
