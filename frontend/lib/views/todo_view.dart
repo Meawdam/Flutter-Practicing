@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/controller/todo_controller.dart';
 import 'package:frontend/model/todo_model.dart';
+import 'package:frontend/views/todo_edit_view.dart';
 
 class TodoView extends StatelessWidget {
   const new({super.key});
@@ -46,6 +47,21 @@ class _TodoAppState extends State<TodoApp> {
     fetchTask();
   }
 
+  void gotoEdit(int index) async {
+    String id = todos[index].id;
+    String title = todos[index].title;
+    String? newTitle = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => TodoEditView(title: title)),
+    );
+    if (newTitle == null) {
+      return;
+    }
+    await todoController.editTask(id, title);
+    fetchTask();
+    setState(() {});
+  }
+
   @override
   void initState() {
     super.initState();
@@ -77,7 +93,7 @@ class _TodoAppState extends State<TodoApp> {
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: 2,
+              itemCount: todos.length,
               itemBuilder: (context, index) {
                 return Card(
                   child: ListTile(
@@ -86,7 +102,10 @@ class _TodoAppState extends State<TodoApp> {
                     trailing: Wrap(
                       children: [
                         IconButton(onPressed: null, icon: Icon(Icons.search)),
-                        IconButton(onPressed: null, icon: Icon(Icons.edit)),
+                        IconButton(
+                          onPressed: () => gotoEdit(index),
+                          icon: Icon(Icons.edit),
+                        ),
                         IconButton(
                           onPressed: null,
                           icon: Icon(Icons.delete, color: Colors.red),
