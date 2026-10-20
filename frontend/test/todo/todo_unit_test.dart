@@ -1,0 +1,29 @@
+import 'package:flutter_test/flutter_test.dart';
+import 'package:frontend/todo/controller/todo_controller.dart';
+import 'package:frontend/todo/model/todo_model.dart';
+
+void main() {
+  late TodoController todoController;
+
+  setUp(() {
+    todoController = TodoController();
+  });
+  test('1. Fetch todo should return Todo list', () async {
+    List<TodoModel> todos = await todoController.fetchTasks();
+    expect(todos.length, 3);
+    expect(todos[1].title, 'Cook Dinner');
+  });
+
+  test('2. Add new task should have new task', () async {
+    List<TodoModel> todos = await todoController.fetchTasks();
+    int before = todos.length;
+
+    await todoController.addTasks('Read a book', DateTime(2026, 9, 13));
+
+    todos = await todoController.fetchTasks();
+    
+    expect(todos.length, before + 1);
+    expect(todos.last.title, 'Read a book');
+    expect(todos.last.deadline.day, 13);
+  });
+}
