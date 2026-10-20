@@ -38,4 +38,32 @@ class TodoController {
       throw Exception('Could not connect to server');
     }
   }
+
+    Future<void> deleteTasks(String id) async {
+    try {
+      final res = await http.delete(
+        Uri.parse('$baseUrl/$id'),
+      );
+      if (res.statusCode != 200) throw Exception('failed to delete');
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception('Could not connect to server');
+    }
+  }
+
+  Future<void> updateTasks(String id, String title) async {
+    try {
+      final res = await http.patch(
+        Uri.parse('$baseUrl/$id'),
+        headers: {'Content-type': 'application/json'},
+        body: jsonEncode({
+          'title': title,
+        }),
+      );
+      if (res.statusCode != 200) throw Exception('failed to update title');
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception('Could not connect to server');
+    }
+  }
 }

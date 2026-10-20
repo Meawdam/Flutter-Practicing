@@ -21,9 +21,31 @@ void main() {
     await todoController.addTasks('Read a book', DateTime(2026, 9, 13));
 
     todos = await todoController.fetchTasks();
-    
+
     expect(todos.length, before + 1);
     expect(todos.last.title, 'Read a book');
     expect(todos.last.deadline.day, 13);
+  });
+
+  test('3. Delete task, the task should be deleted', () async {
+    List<TodoModel> todos = await todoController.fetchTasks();
+    int before = todos.length;
+
+    await todoController.deleteTasks(todos.last.id);
+
+    todos = await todoController.fetchTasks();
+
+    expect(todos.length, before - 1);
+  });
+
+  test('4. Update title, the title should be updated', () async {
+    List<TodoModel> todos = await todoController.fetchTasks();
+    expect(todos[0].title, 'Do homework');
+
+    await todoController.updateTasks('1', 'Take a shower');
+
+    todos = await todoController.fetchTasks();
+
+    expect(todos[0].title, 'Take a shower');
   });
 }
