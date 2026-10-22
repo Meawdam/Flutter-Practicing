@@ -18,7 +18,7 @@ void main() {
     List<TodoModel> todos = await todoController.fetchTasks();
     int before = todos.length;
 
-    await todoController.addTasks('Read a book', DateTime(2026, 9, 13));
+    await todoController.addTask('Read a book', DateTime(2026, 9, 13));
 
     todos = await todoController.fetchTasks();
 
@@ -31,7 +31,7 @@ void main() {
     List<TodoModel> todos = await todoController.fetchTasks();
     int before = todos.length;
 
-    await todoController.deleteTasks(todos.last.id);
+    await todoController.deleteTask(todos.last.id);
 
     todos = await todoController.fetchTasks();
 
@@ -42,7 +42,7 @@ void main() {
     List<TodoModel> todos = await todoController.fetchTasks();
     expect(todos[0].title, 'Do homework');
 
-    await todoController.updateTasks('1', 'Take a shower');
+    await todoController.updateTask('1', 'Take a shower');
 
     todos = await todoController.fetchTasks();
 

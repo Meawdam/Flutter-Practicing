@@ -20,7 +20,7 @@ class TodoController {
     }
   }
 
-  Future<void> addTasks(String title, DateTime deadline) async {
+  Future<void> addTask(String title, DateTime deadline) async {
     try {
       final res = await http.post(
         Uri.parse(baseUrl),
@@ -39,7 +39,7 @@ class TodoController {
     }
   }
 
-  Future<void> deleteTasks(String id) async {
+  Future<void> deleteTask(String id) async {
     try {
       final res = await http.delete(Uri.parse('$baseUrl/$id'));
       if (res.statusCode != 200) throw Exception('failed to delete');
@@ -49,7 +49,7 @@ class TodoController {
     }
   }
 
-  Future<void> updateTasks(String id, String title) async {
+  Future<void> updateTask(String id, String title) async {
     try {
       final res = await http.patch(
         Uri.parse('$baseUrl/$id'),
