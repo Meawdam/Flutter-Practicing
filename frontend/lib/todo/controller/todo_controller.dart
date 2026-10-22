@@ -39,11 +39,9 @@ class TodoController {
     }
   }
 
-    Future<void> deleteTasks(String id) async {
+  Future<void> deleteTasks(String id) async {
     try {
-      final res = await http.delete(
-        Uri.parse('$baseUrl/$id'),
-      );
+      final res = await http.delete(Uri.parse('$baseUrl/$id'));
       if (res.statusCode != 200) throw Exception('failed to delete');
     } catch (e) {
       debugPrint(e.toString());
@@ -56,11 +54,37 @@ class TodoController {
       final res = await http.patch(
         Uri.parse('$baseUrl/$id'),
         headers: {'Content-type': 'application/json'},
-        body: jsonEncode({
-          'title': title,
-        }),
+        body: jsonEncode({'title': title}),
       );
       if (res.statusCode != 200) throw Exception('failed to update title');
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception('Could not connect to server');
+    }
+  }
+
+  Future<void> toggleFavorite(String id, bool favorite) async {
+    try {
+      final res = await http.patch(
+        Uri.parse('$baseUrl/$id'),
+        headers: {'Content-type': 'application/json'},
+        body: jsonEncode({'favorite': favorite}),
+      );
+      if (res.statusCode != 200) throw Exception('failed to toggle favorite');
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception('Could not connect to server');
+    }
+  }
+
+  Future<void> toggleComplete(String id, bool complete) async {
+    try {
+      final res = await http.patch(
+        Uri.parse('$baseUrl/$id'),
+        headers: {'Content-type': 'application/json'},
+        body: jsonEncode({'complete': complete}),
+      );
+      if (res.statusCode != 200) throw Exception('failed to toggle complete');
     } catch (e) {
       debugPrint(e.toString());
       throw Exception('Could not connect to server');
