@@ -4,13 +4,18 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon app.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
-    "json-server": "^1.0.0-beta.15"
+    "cors": "^2.8.6",
+    "express": "^5.3.0",
+    "json-server": "^1.0.0-beta.15",
+    "mysql2": "^3.24.6",
+    "nodemon": "^3.1.14"
   }
 }

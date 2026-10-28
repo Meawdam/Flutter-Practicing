@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/todo/model/todo_model.dart';
 
-
 class TodoEditView extends StatelessWidget {
  final TodoModel task;
  final editController = TextEditingController();

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/todo/model/todo_model.dart';
 
-
 class TodoDetailView extends StatelessWidget {
  final TodoModel task;
  const TodoDetailView({super.key, required this.task});
@@ -23,8 +22,8 @@ class TodoDetailView extends StatelessWidget {
            children: [
              Text('Task title: ${task.title}'),
              Text('Deadline: $deadline'),
-             Text('Complete: ${task.complete}'),
-             Text('Favorite: ${task.favorite}'),
+             Text('Complete: ${task.complete == 1 ? "yes" : "no"}'),
+             Text('Favorite: ${task.favorite == 1 ? "yes" : "no"}'),
            ],
          ),
        ),

@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:frontend/todo/views/todo_view.dart';
+// import 'package:flutter/material.dart';
+// import 'package:frontend/todo/views/todo_view.dart';
 
 
-void main() {
-  runApp(TodoView());
-}
+// void main() {
+//   runApp(TodoView());
+// }

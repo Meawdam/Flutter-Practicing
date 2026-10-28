@@ -2,50 +2,79 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:frontend/todo/controller/todo_controller.dart';
 import 'package:frontend/todo/model/todo_model.dart';
 
+
 void main() {
-  late TodoController todoController;
+ test('1. Get tasks should return all tasks', () async {
+   TodoController controller = TodoController();
+   List<TodoModel> todos = await controller.getTasks();
 
-  setUp(() {
-    todoController = TodoController();
-  });
-  test('1. Fetch todo should return Todo list', () async {
-    List<TodoModel> todos = await todoController.fetchTasks();
-    expect(todos.length, 3);
-    expect(todos[1].title, 'Cook Dinner');
-  });
 
-  test('2. Add new task should have new task', () async {
-    List<TodoModel> todos = await todoController.fetchTasks();
-    int before = todos.length;
+   expect(todos.length, 2);
+   expect(todos.first.title, 'Cook dinner');
+   expect(todos.first.deadline.day, 18);
+ });
 
-    await todoController.addTask('Read a book', DateTime(2026, 9, 13));
 
-    todos = await todoController.fetchTasks();
+ test('2. Add new task should have the new task', () async {
+   TodoController controller = TodoController();
+   List<TodoModel> todos = await controller.getTasks();
+   int before = todos.length;
 
-    expect(todos.length, before + 1);
-    expect(todos.last.title, 'Read a book');
-    expect(todos.last.deadline.day, 13);
-  });
 
-  test('3. Delete task, the task should be deleted', () async {
-    List<TodoModel> todos = await todoController.fetchTasks();
-    int before = todos.length;
+   await controller.addTask('Watch movie', DateTime(2026, 10, 22));
+   todos = await controller.getTasks();
 
-    await todoController.deleteTask(todos.last.id);
 
-    todos = await todoController.fetchTasks();
+   expect(todos.length, before + 1);
+   expect(todos.last.title, 'Watch movie');
+   expect(todos.last.deadline.day, 22);
+ });
 
-    expect(todos.length, before - 1);
-  });
 
-  test('4. Update title, the title should be updated', () async {
-    List<TodoModel> todos = await todoController.fetchTasks();
-    expect(todos[0].title, 'Do homework');
+ test('3. Delete task should remove the task', () async {
+   TodoController controller = TodoController();
+   List<TodoModel> todos = await controller.getTasks();
+   int before = todos.length;
 
-    await todoController.updateTask('1', 'Take a shower');
 
-    todos = await todoController.fetchTasks();
+   // delete the last task
+   await controller.deleteTask(todos.last.id);
+   todos = await controller.getTasks();
 
-    expect(todos[0].title, 'Take a shower');
-  });
+
+   expect(todos.length, before - 1);
+ });
+
+
+ test('4. Edit task should have the updated task', () async {
+   TodoController controller = TodoController();
+   List<TodoModel> todos = await controller.getTasks();
+
+
+   // update the first task
+   await controller.editTask(todos.first.id, 'Cook dinner');
+   todos = await controller.getTasks();
+
+
+   expect(todos.first.title, 'Cook dinner');
+ });
+
+
+ test('5. Toggle status should have the updated status', () async {
+   TodoController controller = TodoController();
+   List<TodoModel> todos = await controller.getTasks();
+   int complete = todos.first.complete;
+   int favorite = todos.first.favorite;
+
+
+   // update the first status
+   await controller.toggleTask(todos.first.id, 'complete', 1 - complete);
+   await controller.toggleTask(todos.first.id, 'favorite', 1 - favorite);
+   todos = await controller.getTasks();
+
+
+   expect(todos.first.complete, 1 - complete);
+   expect(todos.first.favorite, 1 - favorite);
+ });
 }
+

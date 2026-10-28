@@ -1,26 +1,26 @@
 class TodoModel {
-  String id;
+  int id;
   String title;
   DateTime deadline;
-  bool complete;
-  bool favorite;
+  int complete;
+  int favorite;
 
   TodoModel({
     required this.id,
     required this.title,
     required this.deadline,
-    this.complete = false,
-    this.favorite = false,
+    this.complete = 0,
+    this.favorite = 0,
   });
 
-  factory TodoModel.fromJson(Map<String, dynamic> json) {
+  factory TodoModel.fromJSON(Map<String, dynamic> json) {
     DateTime deadline = DateTime.parse(json['deadline']);
     return TodoModel(
       id: json['id'],
       title: json['title'],
       deadline: deadline,
-      complete: json['complete'] ?? false,
-      favorite: json['favorite'] ?? false
+      complete: json['complete'],
+      favorite: json['favorite'],
     );
   }
 
@@ -30,7 +30,7 @@ class TodoModel {
       'title': title,
       'deadline': deadline.toString(),
       'complete': complete,
-      'favorite': favorite
+      'favorite': favorite,
     };
   }
 }
