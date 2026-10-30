@@ -1,11 +1,14 @@
 const express = require("express");
 const cors = require("cors");
 const argon2 = require("@node-rs/argon2");
+const jwt = require('jsonwebtoken');
 const con = require("./db_config");
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+const JWT_KEY = 'IloVEmYJob';
 
 app.get("/api/password/:raw", (req, res) => {
   const hash = argon2.hashSync(req.params.raw);
@@ -31,8 +34,9 @@ app.post("/api/login", (req, res) => {
       console.error("Password is wrong");
       return res.status(401).send("Password is wrong");
     }
-    // correct login
-    res.send("Login OK");
+    const payload = {id: result[0].id, username: result[0].username, role: result[0].role};
+    const token = jwt.sign(payload, JWT_KEY, {expiresIn: '1d'});
+    res.send(token);
   });
 });
 
