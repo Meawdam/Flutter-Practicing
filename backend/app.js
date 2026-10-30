@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const argon2 = require('@node-rs/argon2');
 const con = require('./db_config');
 
 
@@ -7,6 +8,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.get('/api/password/:raw', (req, res) => {
+    const hash = argon2.hashSync(req.params.raw);
+    console.log(hash.length);
+    res.send(hash);
+})
 
 //------------------- Get all tasks --------------
 app.get("/api/todo", (req, res) => {
