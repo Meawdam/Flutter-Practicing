@@ -1,14 +1,14 @@
 const express = require("express");
 const cors = require("cors");
 const argon2 = require("@node-rs/argon2");
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 const con = require("./db_config");
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-const JWT_KEY = 'IloVEmYJob';
+const JWT_KEY = "IloVEmYJob";
 
 app.get("/api/password/:raw", (req, res) => {
   const hash = argon2.hashSync(req.params.raw);
@@ -34,16 +34,39 @@ app.post("/api/login", (req, res) => {
       console.error("Password is wrong");
       return res.status(401).send("Password is wrong");
     }
-    const payload = {id: result[0].id, username: result[0].username, role: result[0].role};
-    const token = jwt.sign(payload, JWT_KEY, {expiresIn: '1d'});
+    const payload = {
+      id: result[0].id,
+      username: result[0].username,
+      role: result[0].role,
+    };
+    const token = jwt.sign(payload, JWT_KEY, { expiresIn: "1d" });
     res.send(token);
   });
 });
 
-//------------------- Get all tasks --------------
+//------------------- Get all tasks of a user --------------
 app.get("/api/todo", (req, res) => {
-  const sql = "SELECT * FROM todo";
-  con.query(sql, (err, result) => {
+  let payload_jwt = "";
+  const header = req.headers["authorization"];
+  let token = header;
+  if (header.startsWith("Bearer ")) {
+    token = header.split(" ")[1];
+  }
+
+  jwt.verify(token, JWT_KEY, (err, payload) => {
+    if (err) {
+      return res.status(403).send("Unauthorized");
+    }
+    payload_jwt = payload;
+  });
+
+  const role = payload_jwt.role;
+  if (role != "user") {
+    console.log("Wrong user role");
+    return res.status(403).send("Wrong user role");
+  }
+  const sql = "SELECT * FROM todo WHERE user_id = ?";
+  con.query(sql, [payload_jwt.id], (err, result) => {
     if (err) {
       console.error(err.message);
       return res.status(500).send("Database server error");
